@@ -1,6 +1,5 @@
 %{
 
-#include "global.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -34,7 +33,7 @@ ADD SUF REG SEPARATOR REG SEPARATOR REG {
 | CMP SUF REG SEPARATOR REG {
   $$ = (2 << 24) + ($1 << 21) + ($2 << 14) + ($3 << 14);
 }
-| LOAD SUF REG SEPARATOR FLOAG {
+| LOAD SUF REG SEPARATOR FLOAT {
   $$ = (3 << 24) + ($1 << 21) + ($2 << 32);
 }
 | MOVE SUF REG SEPARATOR REG {

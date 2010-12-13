@@ -35,12 +35,13 @@ reel		{entier}("."{entier})?{exposant}?
 
 offset		entier
 
-<<EOF>>		FIN
+fin		EOF
 
 %%
 
 {blancs}	{ /* on ignore */ }
 {seperateur}	return SEPARATOR;
+{fin}		return FIN;
 
 {offset}	{
   yylval = atol(yytext);
@@ -51,8 +52,6 @@ offset		entier
   yylval = atof(yytext);
   return FLOAT;
 }
-
-{FIN}		return FIN;
 
 {add}		return ADD;
 {b}		return B;
