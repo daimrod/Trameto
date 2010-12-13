@@ -8,7 +8,7 @@
 
 %token  ADD B CMP LOAD MOVE MUL POW PRINT READ STOP SUB
 %token  SUF FLOAT OFFSET REG
-%token  FIN SEPARATOR
+%token  RET SEPARATOR FIN
 
 %start Input
 %%
@@ -19,9 +19,9 @@ Input:
   ;
 
 Ligne:
-FIN { printf("fin\n"); }
-| Expression FIN    { printf("fin 2\n"); }
-  ;
+FIN
+| Expression RET    { printf("resultat %d \n", $1); }
+;
 
 Expression:
 ADD SUF REG SEPARATOR REG SEPARATOR REG {

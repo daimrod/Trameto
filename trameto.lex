@@ -34,13 +34,13 @@ reel		{entier}("."{entier})?{exposant}?
 
 offset		entier
 
-fin		EOF
 
 %%
 
 {blancs}	{ /* on ignore */ }
 {seperateur}	return SEPARATOR;
-{fin}		return FIN;
+\n		return RET;
+<<EOF>>		return FIN;
 
 {offset}	{
   yylval = atol(yytext);
