@@ -6,7 +6,6 @@
   #define LE 3
   #define NE 4
 
-  float yylval;
 %}
 
 blancs		[ \t]+
@@ -66,23 +65,31 @@ fin		EOF
 {sub}		return SUB;
 
 {suffixe}	{
-  switch (yytext) {
-  case "al" || "AL" || "Al" || "aL":
+  if (strncmp(yytext, "al", sizeof(char) * 2)
+      || strncmp(yytext, "AL", sizeof(char) * 2)
+      || strncmp(yytext, "Al", sizeof(char) * 2)
+      || strncmp(yytext, "aL", sizeof(char) * 2))
     yylval = AL;
-    break;
-  case "eq" || "EQ" || "Eq" || "eQ":
-    yylval = EQ;
-    break;
-  case "lt" || "LT" || "Lt" || "lT":
-    yylval = LT;
-    break;
-  case "le" || "LE" || "Le" || "lE":
-    yylval = LE;
-    break;
-  case "ne" || "NE" || "Ne" || "nE":
-    yylval = NE;
-    break;
-  }
+  if (strncmp(yytext, "eq", sizeof(char) * 2)
+      || strncmp(yytext, "EQ", sizeof(char) * 2)
+      || strncmp(yytext, "Eq", sizeof(char) * 2)
+      || strncmp(yytext, "eQ", sizeof(char) * 2))
+    yylval = AL;
+  if (strncmp(yytext, "lt", sizeof(char) * 2)
+      || strncmp(yytext, "LT", sizeof(char) * 2)
+      || strncmp(yytext, "Lt", sizeof(char) * 2)
+      || strncmp(yytext, "lT", sizeof(char) * 2))
+    yylval = AL;
+  if (strncmp(yytext, "le", sizeof(char) * 2)
+      || strncmp(yytext, "LE", sizeof(char) * 2)
+      || strncmp(yytext, "Le", sizeof(char) * 2)
+      || strncmp(yytext, "lE", sizeof(char) * 2))
+    yylval = AL;
+  if (strncmp(yytext, "ne", sizeof(char) * 2)
+      || strncmp(yytext, "NE", sizeof(char) * 2)
+      || strncmp(yytext, "Ne", sizeof(char) * 2)
+      || strncmp(yytext, "nE", sizeof(char) * 2))
+    yylval = AL;
   return SUF;
 }
 
