@@ -1,2 +1,7 @@
 *.o
 *~
+lex.yy.c
+trameto
+trameto.tab.c
+trameto.tab.h
+
