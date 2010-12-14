@@ -39,7 +39,7 @@ EXP:  CMP SUF REG SEPARATOR REG {
   printf("%s\n", uint64_to_str(u64_SL(2,  24)
 			       + u64_SL($2,  21)
 			       + u64_SL($3,  14)
-			       + u64_SL($5,  14)));
+			       + u64_SL($5,  7)));
   $$ = 0; }
 EXP:  LOAD SUF REG SEPARATOR FLOAT {
   printf("%s\n", uint64_to_str(u64_SL(3,  24)
@@ -72,12 +72,17 @@ EXP:  PRINT SUF REG {
 			       + u64_SL($2,  21)
 			       + u64_SL($3,  14)));
   $$ = 0; }
-EXP:  STOP SUF {
+EXP:  READ SUF REG {
   printf("%s\n", uint64_to_str(u64_SL(8,  24)
+			       + u64_SL($2,  21)
+			       + u64_SL($3,  14)));
+  $$ = 0; }
+EXP:  STOP SUF {
+  printf("%s\n", uint64_to_str(u64_SL(9,  24)
 			       + u64_SL($2,  21)));
   $$ = 0; }
 EXP:  SUB SUF REG SEPARATOR REG SEPARATOR REG {
-  printf("%s\n", uint64_to_str(u64_SL(9,  24)
+  printf("%s\n", uint64_to_str(u64_SL(10,  24)
 			       + u64_SL($2,  21)
 			       + u64_SL($3,  14)
 			       + u64_SL($5,  7)
