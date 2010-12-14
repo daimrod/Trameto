@@ -20,7 +20,8 @@ input: /* empty */
 ;
 
 line:
-EXP EOL
+EOL
+| EXP EOL
 ;
 
 EXP: ADD SUF REG SEPARATOR REG SEPARATOR REG {
