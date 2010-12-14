@@ -30,7 +30,7 @@ reg		[rR](0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15)
 chiffre		[0-9]
 entier		{chiffre}+
 exposant	[eE][+-]?{entier}
-reel		{entier}("."{entier})?{exposant}?
+reel		[+-]?{entier}("."{entier})?{exposant}?
 commentaire	"//".*
 
 %%
@@ -40,13 +40,13 @@ commentaire	"//".*
 \n		return EOL;
 {commentaire}	{ /* on ignore */ }
 
-{entier}		{
+[+-]?{entier}		{
   yylval = atoi(yytext);
   return OFFSET;
 }
 
 {reel}		{
-  double tmp = atof(yytext);
+  float tmp = atof(yytext);
   yylval = * (uint32_t*) &tmp;
   return FLOAT;
 }
