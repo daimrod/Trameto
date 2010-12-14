@@ -1,15 +1,12 @@
 %{
-  #include "trameto.tab.h"
-  #define AL 0
-  #define EQ 1
-  #define LT 2
-  #define LE 3
-  #define NE 4
 
+  #include "global.h"
+  #include "trameto.tab.h"
 %}
 
 blancs		[ \t]+
 seperateur	,
+eof		<<EOF>>
 
 add		(?i:add)
 b		(?i:b)
@@ -32,23 +29,21 @@ entier		{chiffre}+
 exposant	[eE][+-]?{entier}
 reel		{entier}("."{entier})?{exposant}?
 
-offset		entier
-
-
 %%
 
 {blancs}	{ /* on ignore */ }
 {seperateur}	return SEPARATOR;
 \n		return RET;
-<<EOF>>		return FIN;
+eof		return FIN;
 
-{offset}	{
-  yylval = atol(yytext);
+{entier}		{
+  yylval = atoi(yytext);
   return OFFSET;
 }
 
 {reel}		{
-  yylval = atof(yytext);
+  double tmp = atof(yytext);
+  yylval = * (uint32_t*) &tmp;
   return FLOAT;
 }
 
@@ -94,6 +89,7 @@ offset		entier
 }
 
 {reg}		{
-  yylval = atoi(yytext+sizeof(char));
+  yylval = yytext[1] - '0';
+  printf("%d\n", yylval);
   return REG;
 }
