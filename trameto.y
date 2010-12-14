@@ -6,7 +6,6 @@
 #include <math.h>
 
 char* uint64_to_str(uint64_t n);
-uint64_t shift_left(uint64_t n, size_t i);
 %}
 
 %token  ADD B CMP LOAD MOVE MUL POW PRINT READ STOP SUB
@@ -25,62 +24,62 @@ EXP EOL
 ;
 
 EXP: ADD SUF REG SEPARATOR REG SEPARATOR REG {
-  printf("%s\n", uint64_to_str(shift_left($2, 21)
-			       + shift_left($3,  14)
-			       + shift_left($5,  7)
+  printf("%s\n", uint64_to_str(u64_SL($2, 21)
+			       + u64_SL($3,  14)
+			       + u64_SL($5,  7)
 			       + $7));
   $$ = 0; }
 EXP:  B SUF OFFSET {
-  printf("%s\n", uint64_to_str(shift_left(1, 24)
-			       + shift_left($2, 21)
-			       + shift_left($3, 32)));
+  printf("%s\n", uint64_to_str(u64_SL(1, 24)
+			       + u64_SL($2, 21)
+			       + u64_SL($3, 32)));
   $$ = 0; }
 EXP:  CMP SUF REG SEPARATOR REG {
-  printf("%s\n", uint64_to_str(shift_left(2,  24)
-			       + shift_left($2,  21)
-			       + shift_left($3,  14)
-			       + shift_left($5,  14)));
+  printf("%s\n", uint64_to_str(u64_SL(2,  24)
+			       + u64_SL($2,  21)
+			       + u64_SL($3,  14)
+			       + u64_SL($5,  14)));
   $$ = 0; }
 EXP:  LOAD SUF REG SEPARATOR FLOAT {
-  printf("%s\n", uint64_to_str(shift_left(3,  24)
-			       + shift_left($2,  21)
-			       + shift_left($3,  14)
-			       + shift_left($5,  32)));
+  printf("%s\n", uint64_to_str(u64_SL(3,  24)
+			       + u64_SL($2,  21)
+			       + u64_SL($3,  14)
+			       + u64_SL($5,  32)));
   $$ = 0; }
 EXP:  MOVE SUF REG SEPARATOR REG {
-  printf("%s\n", uint64_to_str(shift_left(4,  24)
-			       + shift_left($2,  21)
-			       + shift_left($3,  14)
-			       + shift_left($5,  7)));
+  printf("%s\n", uint64_to_str(u64_SL(4,  24)
+			       + u64_SL($2,  21)
+			       + u64_SL($3,  14)
+			       + u64_SL($5,  7)));
   $$ = 0; }
 EXP:  MUL SUF REG SEPARATOR REG SEPARATOR REG {
-  printf("%s\n", uint64_to_str(shift_left(5,  24)
-			       + shift_left($2,  21)
-			       + shift_left($3,  14)
-			       + shift_left($5,  7)
+  printf("%s\n", uint64_to_str(u64_SL(5,  24)
+			       + u64_SL($2,  21)
+			       + u64_SL($3,  14)
+			       + u64_SL($5,  7)
 			       + $7));
   $$ = 0; }
 EXP:  POW SUF REG SEPARATOR REG SEPARATOR FLOAT {
-  printf("%s\n", uint64_to_str(shift_left(6,  24)
-			       + shift_left($2,  21)
-			       + shift_left($3,  14)
-			       + shift_left($5,  7)
-			       + shift_left($7,  32)));
+  printf("%s\n", uint64_to_str(u64_SL(6,  24)
+			       + u64_SL($2,  21)
+			       + u64_SL($3,  14)
+			       + u64_SL($5,  7)
+			       + u64_SL($7,  32)));
   $$ = 0; }
 EXP:  PRINT SUF REG {
-  printf("%s\n", uint64_to_str(shift_left(7,  24)
-			       + shift_left($2,  21)
-			       + shift_left($3,  14)));
+  printf("%s\n", uint64_to_str(u64_SL(7,  24)
+			       + u64_SL($2,  21)
+			       + u64_SL($3,  14)));
   $$ = 0; }
 EXP:  STOP SUF {
-  printf("%s\n", uint64_to_str(shift_left(8,  24)
-			       + shift_left($2,  21)));
+  printf("%s\n", uint64_to_str(u64_SL(8,  24)
+			       + u64_SL($2,  21)));
   $$ = 0; }
 EXP:  SUB SUF REG SEPARATOR REG SEPARATOR REG {
-  printf("%s\n", uint64_to_str(shift_left(9,  24)
-			       + shift_left($2,  21)
-			       + shift_left($3,  14)
-			       + shift_left($5,  7)
+  printf("%s\n", uint64_to_str(u64_SL(9,  24)
+			       + u64_SL($2,  21)
+			       + u64_SL($3,  14)
+			       + u64_SL($5,  7)
 			       + $7));
   $$ = 0; }
 ;
@@ -155,10 +154,4 @@ char* uint64_to_str(uint64_t n) {
   ret = strrev(ret);
 
   return ret;
-}
-
-uint64_t shift_left(uint64_t n, size_t i) {
-  while(i--)
-    n = n << 1;
-  return n;
 }

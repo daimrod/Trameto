@@ -12,4 +12,6 @@
 #define YYSTYPE uint32_t
 extern YYSTYPE yylval;
 
+#define u64_SL(n, x) ((uint64_t) (((uint64_t) (n)) << ((uint64_t) (x))))
+
 #endif
