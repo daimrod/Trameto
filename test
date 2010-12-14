@@ -1,0 +1,4 @@
+addal r1, r2, r3
+addal r1, r2, r3
+printal r0
+printal r0
