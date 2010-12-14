@@ -1,0 +1,9 @@
+mulal r4, r0, r0
+mulal r5, r1, r2
+loadal r6, 4.0
+mulal r7, r6, r5
+subal r0, r4, r7
+loadal r1, 0.0
+cmpal r1, r0
+loadlt r3, 2.0
+bal 2
