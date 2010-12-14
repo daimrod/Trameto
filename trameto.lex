@@ -31,12 +31,14 @@ chiffre		[0-9]
 entier		{chiffre}+
 exposant	[eE][+-]?{entier}
 reel		{entier}("."{entier})?{exposant}?
+commentaire	"//".*
 
 %%
 
 {blancs}	{ /* on ignore */ }
 {seperateur}	return SEPARATOR;
 \n		return EOL;
+{commentaire}	{ /* on ignore */ }
 
 {entier}		{
   yylval = atoi(yytext);
