@@ -5,76 +5,65 @@
 #include <stdlib.h>
 #include <math.h>
 
+char* uint64_to_str(uint64_t n);
 %}
 
 %token  ADD B CMP LOAD MOVE MUL POW PRINT READ STOP SUB
 %token  SUF FLOAT OFFSET REG
-%token  RET SEPARATOR FIN
+%token  EOL SEPARATOR FIN
 
-%start Input
+%start input
 %%
 
-Input:
-/* Vide */
-| Input Ligne
+input: /* empty */
+| input line
 ;
 
-Ligne:
-Expression RET { printf("%d\n", $1); }
-| RET
-| FIN
+line:
+EXP EOL
 ;
 
-Expression:
-ADD SUF REG SEPARATOR REG SEPARATOR REG {
-  printf("%lld\n", ($1 << 21) + ($2 << 14) + ($3 << 7) + $4);
-  $$ = 0;
-}
-| B SUF OFFSET {
-  printf("%lld\n", (1 << 24) + ($1 << 21) + ($2 << 32));
-  $$ = 0;
-}
-| CMP SUF REG SEPARATOR REG {
-  printf("%lld\n", (2 << 24) + ($1 << 21) + ($2 << 14) + ($3 << 14));
-  $$ = 0;
-}
-| LOAD SUF REG SEPARATOR FLOAT {
-  printf("%lld\n", (3 << 24) + ($1 << 21) + ($2 << 32));
-  $$ = 0;
-}
-| MOVE SUF REG SEPARATOR REG {
-  printf("%lld\n", (4 << 24) + ($1 << 21) + ($2 << 14) + ($3 << 7));
-  $$ = 0;
-}
-| MUL SUF REG SEPARATOR REG SEPARATOR REG {
-  printf("%lld\n", (5 << 24) + ($1 << 21) + ($2 << 14) + ($3 << 7) + $4);
-  $$ = 0;
-}
-| POW SUF REG SEPARATOR REG SEPARATOR FLOAT {
-  printf("%lld\n", (6 << 24) + ($1 << 21) + ($2 << 14) + ($3 << 7) + ($4 << 32));
-  $$ = 0;
-}
-| PRINT SUF REG {
-  printf("%d\n", $1);
-  printf("%d\n", $2);
-  printf("%lld\n", (7 << 24) + ($1 << 21) + ($2 << 14));
-  $$ = 0;
-}
-| STOP SUF {
-  printf("%lld\n", 8 << 24);
-  $$ = 0;
-}
-| SUB SUF REG SEPARATOR REG SEPARATOR REG {
-  printf("%lld\n", (9 << 24) + ($1 << 21) + ($2 << 14) + ($3 << 7) + $4);
-  $$ = 0;
-}
+EXP: ADD SUF REG SEPARATOR REG SEPARATOR REG {
+  printf("%s\n", uint64_to_str(($2 << 21) + ($3 << 14) + ($5 << 7) + $7));
+  $$ = 0; }
+EXP:  B SUF OFFSET {
+  printf("%s\n", uint64_to_str((1 << 24) + ($2 << 21) + ($3 << 32)));
+  $$ = 0; }
+EXP:  CMP SUF REG SEPARATOR REG {
+  printf("%s\n", uint64_to_str((2 << 24) + ($2 << 21) + ($3 << 14) + ($5 << 14)));
+  $$ = 0; }
+EXP:  LOAD SUF REG SEPARATOR FLOAT {
+  printf("%s\n", uint64_to_str((3 << 24) + ($2 << 21) + ($3 << 14) + ($5 << 32)));
+  $$ = 0; }
+EXP:  MOVE SUF REG SEPARATOR REG {
+  printf("%s\n", uint64_to_str((4 << 24) + ($2 << 21) + ($3 << 14) + ($5 << 7)));
+  $$ = 0; }
+EXP:  MUL SUF REG SEPARATOR REG SEPARATOR REG {
+  printf("%s\n", uint64_to_str((5 << 24) + ($2 << 21) + ($3 << 14) + ($5 << 7) + $7));
+  $$ = 0; }
+EXP:  POW SUF REG SEPARATOR REG SEPARATOR FLOAT {
+  printf("%s\n", uint64_to_str((6 << 24) + ($2 << 21) + ($3 << 14) + ($5 << 7) + ($7 << 32)));
+  $$ = 0; }
+EXP:  PRINT SUF REG {
+  printf("%s\n", uint64_to_str((7 << 24) + ($2 << 21) + ($3 << 14)));
+  $$ = 0; }
+EXP:  STOP SUF {
+  printf("%s\n", uint64_to_str((8 << 24) + ($2 << 21)));
+  $$ = 0; }
+EXP:  SUB SUF REG SEPARATOR REG SEPARATOR REG {
+  printf("%s\n", uint64_to_str((9 << 24) + ($2 << 21) + ($3 << 14) + ($5 << 7) + $7));
+  $$ = 0; }
 ;
 
 %%
 
 int yyerror(char *s) {
-  printf("%s\n",s);
+  fprintf(stderr, "%s\n",s);
 }
+
+int yywrap() {
+        return 1;
+} 
 
 int main(void) {
   yyparse();
