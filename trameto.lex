@@ -6,7 +6,6 @@
 
 blancs		[ \t]+
 seperateur	,
-eof		<<EOF>>
 
 add		(?i:add)
 b		(?i:b)
@@ -20,7 +19,11 @@ read		(?i:read)
 stop		(?i:stop)
 sub		(?i:sub)
 
-suffixe		(?i:al|lt|le|eq|ne)
+al		[aA][lL]
+eq		[eE][qQ]
+lt		[lL][tT]
+le		[lL][eE]
+ne		[nN][eE]
 
 reg		[rR](0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15)
 
@@ -33,8 +36,7 @@ reel		{entier}("."{entier})?{exposant}?
 
 {blancs}	{ /* on ignore */ }
 {seperateur}	return SEPARATOR;
-\n		return RET;
-eof		return FIN;
+\n		return EOL;
 
 {entier}		{
   yylval = atoi(yytext);
@@ -59,37 +61,28 @@ eof		return FIN;
 {stop}		return STOP;
 {sub}		return SUB;
 
-{suffixe}	{
-  if (strncmp(yytext, "al", sizeof(char) * 2)
-      || strncmp(yytext, "AL", sizeof(char) * 2)
-      || strncmp(yytext, "Al", sizeof(char) * 2)
-      || strncmp(yytext, "aL", sizeof(char) * 2))
-    yylval = AL;
-  if (strncmp(yytext, "eq", sizeof(char) * 2)
-      || strncmp(yytext, "EQ", sizeof(char) * 2)
-      || strncmp(yytext, "Eq", sizeof(char) * 2)
-      || strncmp(yytext, "eQ", sizeof(char) * 2))
-    yylval = AL;
-  if (strncmp(yytext, "lt", sizeof(char) * 2)
-      || strncmp(yytext, "LT", sizeof(char) * 2)
-      || strncmp(yytext, "Lt", sizeof(char) * 2)
-      || strncmp(yytext, "lT", sizeof(char) * 2))
-    yylval = AL;
-  if (strncmp(yytext, "le", sizeof(char) * 2)
-      || strncmp(yytext, "LE", sizeof(char) * 2)
-      || strncmp(yytext, "Le", sizeof(char) * 2)
-      || strncmp(yytext, "lE", sizeof(char) * 2))
-    yylval = AL;
-  if (strncmp(yytext, "ne", sizeof(char) * 2)
-      || strncmp(yytext, "NE", sizeof(char) * 2)
-      || strncmp(yytext, "Ne", sizeof(char) * 2)
-      || strncmp(yytext, "nE", sizeof(char) * 2))
-    yylval = AL;
+{al}		{
+  yylval = AL;
+  return SUF;
+}
+{eq}		{
+  yylval = EQ;
+  return SUF;
+}
+{lt}		{
+  yylval = LT;
+  return SUF;
+}
+{le}		{
+  yylval = LE;
+  return SUF;
+}
+{ne}		{
+  yylval = NE;
   return SUF;
 }
 
 {reg}		{
   yylval = yytext[1] - '0';
-  printf("%d\n", yylval);
   return REG;
 }
