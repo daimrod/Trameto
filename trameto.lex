@@ -41,7 +41,8 @@ commentaire	"//".*
 {commentaire}	{ /* on ignore */ }
 
 [+-]?{entier}		{
-  yylval = atoi(yytext);
+  int tmp = atoi(yytext);
+  yylval = * (uint32_t*) &tmp;
   return OFFSET;
 }
 
