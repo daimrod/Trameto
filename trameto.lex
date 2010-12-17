@@ -86,6 +86,6 @@ commentaire	"//".*
 }
 
 {reg}		{
-  yylval = yytext[1] - '0';
+  yylval = atoi(yytext+1);
   return REG;
 }
